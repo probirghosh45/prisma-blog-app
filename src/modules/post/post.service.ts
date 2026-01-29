@@ -3,7 +3,7 @@ import { PostWhereInput } from "../../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
 
 const createPost = async (
-  data: Omit<Post, "id" | "createdAt" | "updatedAt">
+  data: Omit<Post, "id" | "createdAt" | "updatedAt">,
 ) => {
   const result = await prisma.post.create({
     data,
@@ -15,11 +15,22 @@ const getAllPost = async ({
   search,
   tags,
   isFeatured,
+  status,
+  page,
+  limit,
+  skip,
+  sortBy,
+  sortOrder,
 }: {
   search: string | undefined;
   tags: string[] | [];
   isFeatured: boolean | undefined;
-  status 
+  status: postStatus | undefined;
+  page: number;
+  limit: number;
+  skip: number;
+  sortBy: string | undefined;
+  sortOrder: string | undefined;
 }) => {
   const andConditions: PostWhereInput[] = [];
   if (search) {
@@ -50,19 +61,24 @@ const getAllPost = async ({
     andConditions.push({
       tags: {
         hasEvery: tags,
-      },
+      },  
     });
   }
 
   if (typeof isFeatured === "boolean") {
     andConditions.push({
       isFeatured,
-    });
+    }); 
   }
   const allPost = await prisma.post.findMany({
+    take: limit,
+    skip,
     where: {
       AND: andConditions,
     },
+    orderBy : {
+      [sortBy || "createdAt"] : sortOrder || "desc"
+    }
   });
   return allPost;
 };
