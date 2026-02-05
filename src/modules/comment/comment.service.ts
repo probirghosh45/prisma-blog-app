@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 // import { prisma } from "../../lib/prisma";
 
@@ -40,6 +41,25 @@ const createComment = async (payload: CreateCommentPayload) => {
   });
 };
 
+const getCommentById = async (id: string) => {
+  console.log("comment id", id);
+  return await prisma.comment.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      post: {
+        select: {
+          id: true,
+          title : true,
+          views : true
+        },
+      },
+    },
+  });
+};
+
 export const CommentService = {
   createComment,
+  getCommentById,
 };

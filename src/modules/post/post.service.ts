@@ -80,6 +80,13 @@ const getAllPost = async ({
     orderBy: {
       [sortBy || "createdAt"]: sortOrder || "desc",
     },
+    include: {
+      _count: {
+        select: {
+          comments: true,
+        },
+      },
+    },
   });
   return allPost;
 };
@@ -106,21 +113,25 @@ const getPostById = async (postId: string) => {
             parentId: null,
             status: CommentStatus.APPROVED,
           },
+          orderBy: { cratedAt: "desc" },
           include: {
             replies: {
               where: {
                 status: CommentStatus.APPROVED,
               },
+              orderBy: { cratedAt: "asc" },
               include: {
                 replies: {
                   where: {
                     status: CommentStatus.APPROVED,
                   },
+                  orderBy: { cratedAt: "asc" },
                 },
               },
             },
           },
         },
+        _count: { select: { comments: true } },
       },
     });
     return postData;
@@ -130,5 +141,5 @@ const getPostById = async (postId: string) => {
 export const postService = {
   createPost,
   getAllPost,
-  getPostById
+  getPostById,
 };
