@@ -29,5 +29,6 @@ const router = express.Router();
 router.post("/", auth(UserRole.USER), PostController.createPost);
 
 router.get("/", PostController.getAllPost);
+router.get("/:postId", PostController.getPostById);
 
 export const postRouter = router;
