@@ -3,6 +3,7 @@ import express, { Application } from "express";
 import { auth } from "./lib/auth";
 import { postRouter } from "./modules/post/post.router";
 import cors from "cors"
+import { commentRouter } from "./modules/comment/comment.router";
 
 const app: Application = express();
 
@@ -20,5 +21,6 @@ app.get("/", (req, res) => {
 });
 
 app.use("/posts", postRouter);
+app.use("/comment", commentRouter);
 
 export default app;
