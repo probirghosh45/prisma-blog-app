@@ -10,6 +10,17 @@ const createPost = async (req:Request, res:Response) => {
     }
 }
 
+const getAllPosts = async (req:Request, res:Response) => {
+    try {
+        const result = await PostService.getAllPosts();
+        res.status(200).json(result);
+    }
+    catch (error) {
+        res.status(500).json({ error: "Failed to fetch posts" });
+    }
+}
+
 export const PostController = {
-    createPost
+    createPost,
+    getAllPosts
 }
