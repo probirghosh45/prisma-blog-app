@@ -12,3 +12,4 @@
 //npx prisma migrate dev --name init
 //npx prisma generate
 
+// schema te kono change korle migrate korte hobe , then generate korte hobe
