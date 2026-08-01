@@ -11,7 +11,7 @@ const createPost = async (
       authorId: userId,
     },
   });
-  console.log("Post created:", result);
+  // console.log("Post created:", result);
   return result;
 };
 
