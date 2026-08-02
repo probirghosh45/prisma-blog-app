@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { toNodeHandler } from "better-auth/node";
 import express, { Application } from "express";
 import { auth } from "./lib/auth";
@@ -24,3 +25,22 @@ app.use("/posts", postRouter);
 app.use("/comment", commentRouter);
 
 export default app;
+=======
+import express from "express";
+import { postRouter } from "./modules/post/post.router";
+
+const app = express();
+app.use(express.json());
+
+app.use("/posts", postRouter);
+
+
+
+app.get("/", (req, res) => {
+    res.send("Welcome to the prisma blog app");
+});
+
+
+
+export { app };
+>>>>>>> master
