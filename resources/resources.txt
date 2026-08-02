@@ -3,3 +3,8 @@ Project Requirements : https://drive.google.com/file/d/1DHsflsapAJNCn1FiAP9dzmjJ
 Requirement Analysis : https://app.eraser.io/workspace/4rPbjrtFUGlDEyxc6Ghr?origin=share
 
 ER Diagram : https://drive.google.com/file/d/1v08TTOS_NMIoKUpp8TIo2PuSdDteRhDq/view?usp=drive_link
+
+
+# Middleware and Libraries
+# - Express.js: A web application framework for Node.js, used to build the backend server and handle HTTP requests and responses.
+Get Session:  https://better-auth.com/docs/integrations/express#getting-the-user-session

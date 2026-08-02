@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-namespace */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { fromNodeHeaders } from "better-auth/node";
 import { NextFunction, Request, Response } from "express";
 import { auth as betterAuth } from "../lib/auth";
 
 export enum UserRole {
-  USER = "USER",
-  ADMIN = "ADMIN",
+  Admin = "ADMIN",
+  User = "USER",
 }
 
 declare global {
@@ -16,7 +15,7 @@ declare global {
         name: string;
         email: string;
         role: string;
-        verifiedEmail: boolean;
+        emailVerified: boolean;
       };
     }
   }
@@ -25,22 +24,25 @@ declare global {
 const auth = (...roles: UserRole[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-    //  console.log("check",req.headers)
+      // console.log("Authenticating user...");
+      // console.log(roles)
       const session = await betterAuth.api.getSession({
-        headers: req.headers as any,
+        headers: fromNodeHeaders(req.headers),
       });
-      // console.log(session);
+      // console.log("Session:", session);
+      // return res.json(session);
+
       if (!session) {
         return res.status(401).json({
           success: false,
-          message: "you are not authorized",
+          message: "Unauthorized",
         });
       }
 
       if (!session.user.emailVerified) {
         return res.status(403).json({
           success: false,
-          message: "Email verification required,please verify your email",
+          message: "Email not verified,Please verify your email",
         });
       }
 
@@ -49,20 +51,22 @@ const auth = (...roles: UserRole[]) => {
         name: session.user.name,
         email: session.user.email,
         role: session.user.role as string,
-        verifiedEmail: session.user.emailVerified,
+        emailVerified: session.user.emailVerified,
       };
 
       if (roles.length && !roles.includes(req.user.role as UserRole)) {
         return res.status(403).json({
           success: false,
-          message: "Forbidden , you don't have permission to access resources",
+          message:
+            "Forbidden, You don't have permission to access this resource",
         });
       }
+      // console.log(session);
+
       next();
     } catch (error) {
       next(error);
     }
   };
 };
-
 export default auth;

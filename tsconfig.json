@@ -1,15 +1,4 @@
 {
-<<<<<<< HEAD
-  "compilerOptions": {
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "target": "ES2023",
-    "strict": true,
-    "noImplicitAny": true,
-    "esModuleInterop": true
-  },
-  "include": ["src/**/*"],
-=======
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
     // File Layout
@@ -56,6 +45,5 @@
     "skipLibCheck": true
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
->>>>>>> master
   "exclude": ["node_modules", "dist", "generated/prisma"]
 }

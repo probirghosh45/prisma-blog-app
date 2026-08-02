@@ -1,14 +1,15 @@
 import { Request, Response } from "express";
 import { PostService } from "./post.service";
 
-const createPost = async (req: Request, res: Response) => {
-  try {
-    const result = await PostService.createPost(req.body);
-    res.status(201).json(result);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to create post" });
-  }
-};
+const createPost = async (req:Request, res:Response) => {
+    try {
+        // console.log("check",req.user)
+        const result = await PostService.createPost(req.body, req.user?.id as string);
+        res.status(201).json(result);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to create post" });
+    }
+}
 
 const getAllPosts = async (req: Request, res: Response) => {
   try {
