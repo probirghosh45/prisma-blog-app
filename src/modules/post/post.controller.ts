@@ -19,7 +19,7 @@ const getAllPosts = async (req: Request, res: Response) => {
   try {
     const { search } = req.query;
     console.log("search value", search);
-    const result = await PostService.getAllPosts();
+    const result = await PostService.getAllPosts({search : search as string});
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch posts" });
