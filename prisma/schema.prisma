@@ -1,12 +1,7 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-<<<<<<< HEAD
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-=======
 // Get a free hosted Postgres database in seconds: `npx create-db`
->>>>>>> master
 
 generator client {
   provider = "prisma-client"
@@ -21,26 +16,15 @@ model Post {
   id         String     @id @default(uuid())
   title      String     @db.VarChar(255)
   content    String     @db.Text
-<<<<<<< HEAD
-  thumbnail  String?
-=======
   thumbnail  String
->>>>>>> master
   isFeatured Boolean    @default(false)
   status     PostStatus @default(PUBLISHED)
   tags       String[]
   views      Int        @default(0)
-<<<<<<< HEAD
-  authorId   String //better auth
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-  comments   Comment[]
-=======
   authorId   String
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
   comments   Comments[]
->>>>>>> master
 
   @@index([authorId])
   @@map("posts")
@@ -52,32 +36,14 @@ enum PostStatus {
   ARCHIVED
 }
 
-<<<<<<< HEAD
-model Comment {
-=======
 model Comments {
->>>>>>> master
   id        String        @id @default(uuid())
   content   String        @db.Text
   authorId  String
   postId    String
   post      Post          @relation(fields: [postId], references: [id])
   parentId  String?
-<<<<<<< HEAD
-<<<<<<< HEAD
-  parent    Comment?      @relation("CommentReplies", fields: [parentId], references: [id])
-  replies   Comment[]     @relation("CommentReplies")
-  status    CommentStatus @default(APPROVED)
-  cratedAt  DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-
-  @@index([postId])
-  @@index([authorId])
-=======
-  parent    Comments?     @relation("CommentReplies",fields: [parentId], references: [id])
-=======
   parent    Comments?     @relation("CommentReplies", fields: [parentId], references: [id])
->>>>>>> part-2_Authentication-Authorization
   children  Comments[]    @relation("CommentReplies")
   status    CommentStatus @default(PENDING)
   createdAt DateTime      @default(now())
@@ -85,86 +51,13 @@ model Comments {
 
   @@index([authorId])
   @@index([postId])
->>>>>>> master
   @@map("comments")
 }
 
 enum CommentStatus {
-<<<<<<< HEAD
-  APPROVED
-  REJECT
-}
-
-model User {
-  id            String    @id
-  name          String
-  email         String
-  emailVerified Boolean   @default(false)
-  image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  sessions      Session[]
-  accounts      Account[]
-
-  role   String? @default("USER")
-  phone  String?
-  status String? @default("ACTIVE")
-
-  @@unique([email])
-  @@map("user")
-}
-
-model Session {
-  id        String   @id
-  expiresAt DateTime
-  token     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  ipAddress String?
-  userAgent String?
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([token])
-  @@index([userId])
-  @@map("session")
-}
-
-model Account {
-  id                    String    @id
-  accountId             String
-  providerId            String
-  userId                String
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  accessToken           String?
-  refreshToken          String?
-  idToken               String?
-  accessTokenExpiresAt  DateTime?
-  refreshTokenExpiresAt DateTime?
-  scope                 String?
-  password              String?
-  createdAt             DateTime  @default(now())
-  updatedAt             DateTime  @updatedAt
-
-  @@index([userId])
-  @@map("account")
-}
-
-model Verification {
-  id         String   @id
-  identifier String
-  value      String
-  expiresAt  DateTime
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-
-  @@index([identifier])
-  @@map("verification")
-=======
   PENDING
   APPROVED
   REJECTED
->>>>>>> master
 }
 
 model User {
