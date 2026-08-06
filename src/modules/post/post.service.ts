@@ -16,7 +16,15 @@ const createPost = async (
   return result;
 };
 
-const getAllPosts = async ({ search }: { search?: string }) => {
+const getAllPosts = async ({
+  search,
+  tags,
+  isFeatured,
+}: {
+  search?: string;
+  tags?: string[];
+  isFeatured?: boolean;
+}) => {
   const andConditions: PostWhereInput[] = [];
   if (search) {
     andConditions.push({
@@ -33,9 +41,30 @@ const getAllPosts = async ({ search }: { search?: string }) => {
             mode: "insensitive",
           },
         },
+        {
+          tags: {
+            has: search,
+          },
+        },
       ],
     });
   }
+  if (tags && tags.length > 0) {
+    {
+      andConditions.push({
+        tags: {
+          hasSome: tags,
+        },
+      });
+    }
+  }
+
+  if(isFeatured !== undefined) {
+    andConditions.push({
+      isFeatured,
+    });
+  }
+ 
 
   const result = await prisma.post.findMany({
     where: {

@@ -18,8 +18,58 @@ const createPost = async (req: Request, res: Response) => {
 const getAllPosts = async (req: Request, res: Response) => {
   try {
     const { search } = req.query;
-    console.log("search value", search);
-    const result = await PostService.getAllPosts({search : search as string});
+    // console.log("search value", search);
+    const tags = req.query.tags ? (req.query.tags as string).split(",") : [];
+    // console.log({tags})
+    // const isFeatured =
+    //   req.query.isFeatured === "true"
+    //     ? true
+    //     : req.query.isFeatured === "false"
+    //       ? false
+    //       : undefined;
+
+    // const isFeatured = req.query.isFeatured
+    //   ? req.query.isFeatured === "true"
+    //     ? true
+    //     : req.query.isFeatured === "false"
+    //       ? false
+    //       : undefined
+    //   : undefined;
+
+    const rawIsFeatured = req.query.isFeatured;
+    if (
+      rawIsFeatured !== undefined &&
+      rawIsFeatured !== "true" &&
+      rawIsFeatured !== "false"
+    ) {
+      return res
+        .status(400)
+        .json({
+          error: "Invalid value for isFeatured. Must be 'true' or 'false'.",
+        });
+    }
+
+    const isFeatured =
+      rawIsFeatured === "true"
+        ? true
+        : rawIsFeatured === "false"
+          ? false
+          : undefined;
+
+    const query: {
+      search?: string;
+      tags?: string[];
+      isFeatured?: boolean;
+    } = {
+      search: search as string,
+      tags,
+    };
+
+    if (isFeatured !== undefined) {
+      query.isFeatured = isFeatured;
+    }
+
+    const result = await PostService.getAllPosts(query);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch posts" });
