@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { PostStatus } from "../../../generated/prisma/enums";
 import { PostService } from "./post.service";
 
 const createPost = async (req: Request, res: Response) => {
@@ -42,11 +43,9 @@ const getAllPosts = async (req: Request, res: Response) => {
       rawIsFeatured !== "true" &&
       rawIsFeatured !== "false"
     ) {
-      return res
-        .status(400)
-        .json({
-          error: "Invalid value for isFeatured. Must be 'true' or 'false'.",
-        });
+      return res.status(400).json({
+        error: "Invalid value for isFeatured. Must be 'true' or 'false'.",
+      });
     }
 
     const isFeatured =
@@ -60,6 +59,8 @@ const getAllPosts = async (req: Request, res: Response) => {
       search?: string;
       tags?: string[];
       isFeatured?: boolean;
+      status?: PostStatus;
+      authorId?: string;
     } = {
       search: search as string,
       tags,
@@ -67,6 +68,14 @@ const getAllPosts = async (req: Request, res: Response) => {
 
     if (isFeatured !== undefined) {
       query.isFeatured = isFeatured;
+    }
+
+    if (req.query.status !== undefined) {
+      query.status = req.query.status as PostStatus;
+    }
+
+    if (req.query.authorId !== undefined) {
+      query.authorId = req.query.authorId as string;
     }
 
     const result = await PostService.getAllPosts(query);
