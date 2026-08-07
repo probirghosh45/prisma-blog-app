@@ -7,9 +7,10 @@ async function seedAdmin() {
     console.log("***Starting Admin Seeding***");
     const adminData = {
       name: "pk",
-      email: "pk@gmail.com",
+      email: "pk26@gmail.com",
       role: UserRole.Admin,
       password: "pk2026zewrxctfvgybhjn",
+      //   emailVerified: true, not working because email verification is handled by the auth system, not directly in the database
     };
 
     console.log("*** Checking Admin exist or not***");
@@ -29,7 +30,7 @@ async function seedAdmin() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          origin : process.env.APP_URL || "http://localhost:4000",
+          origin: process.env.APP_URL || "http://localhost:4000",
         },
         body: JSON.stringify(adminData),
       },
@@ -41,7 +42,13 @@ async function seedAdmin() {
       return;
     }
 
-    console.log("***Admin user created successfully***");
+    if (signUpAdmin.ok) {
+      console.log("***Admin user created successfully***");
+      await prisma.user.update({
+        where: { email: adminData.email },
+        data: { emailVerified: true },
+      });
+    }
   } catch (error) {
     console.error("Error seeding admin:", error);
   }
