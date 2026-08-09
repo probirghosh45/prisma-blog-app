@@ -5,11 +5,19 @@ async function seedAdmin() {
   // console.log("***Checking seed admin***")
   try {
     console.log("***Starting Admin Seeding***");
+    const adminName = process.env.ADMIN_NAME;
+    const adminEmail = process.env.ADMIN_EMAIL;
+    const adminPassword = process.env.ADMIN_PASSWORD;
+
+    if (!adminEmail || !adminPassword) {
+      console.error("ADMIN_EMAIL and ADMIN_PASSWORD must be defined.");
+      return;
+    }
     const adminData = {
-      name: "pk",
-      email: "pk26@gmail.com",
+      name: adminName,
+      email: adminEmail,
       role: UserRole.Admin,
-      password: "pk2026zewrxctfvgybhjn",
+      password: adminPassword,
       //   emailVerified: true, not working because email verification is handled by the auth system, not directly in the database
     };
 

@@ -22,12 +22,16 @@ const getAllPosts = async ({
   isFeatured,
   status,
   authorId,
+  page,
+  limit,
 }: {
   search?: string;
   tags?: string[];
   isFeatured?: boolean;
   status?: PostStatus;
   authorId?: string;
+  page?: number;
+  limit?: number;
 }) => {
   const andConditions: PostWhereInput[] = [];
   if (search) {
@@ -81,7 +85,15 @@ const getAllPosts = async ({
     });
   }
 
+  const currentPage = page ?? 1;
+  const currentLimit = limit ?? 10;
+
   const result = await prisma.post.findMany({
+    // pagination
+    take: currentLimit,
+    skip: (currentPage - 1) * currentLimit,
+
+    // filtering
     where: {
       AND: andConditions,
     },

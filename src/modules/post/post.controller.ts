@@ -55,15 +55,26 @@ const getAllPosts = async (req: Request, res: Response) => {
           ? false
           : undefined;
 
+    const page = Number(req.query.page) || 1;
+    console.log("page value", page);
+    // ||  → falsy হলে fallback
+    // ??  → Only null/undefined হলে fallback
+    const limit = Number(req.query.limit) || 10;
+    console.log("limit value", limit);
+
     const query: {
       search?: string;
       tags?: string[];
       isFeatured?: boolean;
       status?: PostStatus;
       authorId?: string;
+      page: number;
+      limit: number;
     } = {
       search: search as string,
       tags,
+      page,
+      limit,
     };
 
     if (isFeatured !== undefined) {
