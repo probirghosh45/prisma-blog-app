@@ -54,13 +54,20 @@ const getAllPosts = async (req: Request, res: Response) => {
         : rawIsFeatured === "false"
           ? false
           : undefined;
-
+    // pagination
     const page = Number(req.query.page) || 1;
     console.log("page value", page);
     // ||  → falsy হলে fallback
     // ??  → Only null/undefined হলে fallback
     const limit = Number(req.query.limit) || 10;
     console.log("limit value", limit);
+    // const skip = (page - 1) * limit;
+
+    // sorting
+    const sortBy = req.query.sortBy as string;
+    const sortOrder = req.query.sortOrder as "asc" | "desc";
+    // console.log("sortBy value", sortBy);
+    // console.log("sortOrder value", sortOrder);
 
     const query: {
       search?: string;
@@ -70,11 +77,17 @@ const getAllPosts = async (req: Request, res: Response) => {
       authorId?: string;
       page: number;
       limit: number;
+      // skip: number;
+      sortBy?: string;
+      sortOrder?: "asc" | "desc";
     } = {
       search: search as string,
       tags,
       page,
       limit,
+      // skip,
+      sortBy,
+      sortOrder,
     };
 
     if (isFeatured !== undefined) {
